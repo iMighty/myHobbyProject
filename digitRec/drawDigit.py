@@ -14,8 +14,8 @@ def onpick(event):
 	ind = event.ind
 	points = tuple(zip(xdata[ind], ydata[ind]))
 	X = np.random.rand(8)
-	line, = ax.plot(X, 'o', picker=5)  # 5 points tolerance
-	print('onpick points:', points)
+	line, = ax.plot(X, 'o', picker=5)
+	plt.draw()
 
 fig.canvas.mpl_connect('pick_event', onpick)
 
