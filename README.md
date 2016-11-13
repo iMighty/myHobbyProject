@@ -1,10 +1,9 @@
 # myHobbyProject
 This is stuff that I make when I'm bored
 
-Current stuff I'm working at
+Current stuff I'm working on
 ---
-* ML: Working on a way to continuously train digit recognition while drawing and giving feedback
-Gonna reword this
+* ML: Working on a way to continuously train digit recognition while drawing additional input with the mouse. 
 
 Almost done stuff
 ---
