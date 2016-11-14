@@ -6,7 +6,8 @@ followingList = []
 topStreamerList = []
 topUser = []
 followingUser = []
-auth_key = 'q2rcoimmqi7m95tozjqnw9aqk00vkk'
+#Add your unique key
+auth_key = ''
 
 	
 def fetchTopStreamer():
