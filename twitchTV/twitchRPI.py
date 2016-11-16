@@ -1,5 +1,3 @@
-
-
 #If you have the kbHit file in the same folder as this python script you can remove these 5 lines.
 import os, sys, inspect
 
@@ -9,7 +7,6 @@ sys.path.insert(0,parentdir)
 
 import jsonTest
 import time
-import livestreamer
 
 #Just to suppress the warnings
 import requests
@@ -28,14 +25,17 @@ password = ''
 #IP Adress
 hostname = ''
 #Paste your auth key here
-#authKey = ''
+authKey = 'q2rcoimmqi7m95tozjqnw9aqk00vkk'
+
+listquality  = {'low': '360p30,low', 'medium': '480p30,medium', 'high': '720p30,720p,high',
+            'HD': 'best'}
 
 def PCMODE():
-        from subprocess import call
-        string = "livestreamer " + str(url) + " " + listquality[usrquality]
-        #print string
-        call(string)
-        sys.exit(0)
+    from subprocess import call
+    string = "livestreamer " + url + " " + listquality[usrquality] + " --twitch-oauth-token " + authKey
+    #print string
+    call(string, shell=True)
+    sys.exit(0)
 
 def RPIMODE():
         import kbhit
@@ -65,33 +65,30 @@ def RPIMODE():
         
 cls()
 if len(sys.argv) == 1:
-        print "Please specify which platform you use, PC or RPI"
-        sys.exit()
+    print "Please specify which platform you use, PC or RPI"
+    sys.exit()
         
 RPI_OR_PC = str(sys.argv[1])
 
 if RPI_OR_PC == 'PC':
-        print "PC MODE"
+    print "PC MODE"
 else:
-        print "RPI MODE"
+    print "RPI MODE"
         
 if len(sys.argv) > 2:
-        usrquality = str(sys.argv[2])
-        print "Setting quality to " + usrquality
+    usrquality = str(sys.argv[2])
+    print "Setting quality to " + usrquality
 else:
-        print "No quality specified, defaulting to 'medium'"
-        usrquality = 'medium'
+    print "No quality specified, defaulting to 'medium'"
+    usrquality = 'medium'
 
 print "1: To view top streamer currently on twitch.tv"
 print "2: To following WIP"
 try:
-        arg = input(": ")
+    arg = input(": ")
 except KeyboardInterrupt:
-        print "Bye bye"
-        exit()
-
-listquality  = {'low': '360p30,low', 'medium': '480p30,medium', 'high': '720p30,720p,high',
-            'HD': 'best'}
+    print "Bye bye"
+    exit()
 
 if arg == 1:
 	cls()
@@ -109,7 +106,7 @@ else:
 	exit()
 
 if RPI_OR_PC == 'PC':
-        PCMODE()
+    PCMODE()
 else:
-        RPIMODE()
+    RPIMODE()
 
