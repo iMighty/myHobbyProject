@@ -1,5 +1,7 @@
 #Using twitch API to fetch current top most viewers on twitch.tv or the streamers you follow
 
+# v1.1, Fixed an error that occurs when a streamer has undefined characters
+
 import requests, os, json
 
 followingList = []
