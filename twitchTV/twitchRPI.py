@@ -27,15 +27,21 @@ hostname = ''
 #Paste your auth key here
 authKey = 'q2rcoimmqi7m95tozjqnw9aqk00vkk'
 
+MAC = True
+
 listquality  = {'low': '360p30,low', 'medium': '480p30,medium', 'high': '720p30,720p,high',
             'HD': 'best'}
 
 def PCMODE():
     from subprocess import call
     string = "livestreamer " + url + " " + listquality[usrquality] + " --twitch-oauth-token " + authKey
-    #print string
-    call(string, shell=True)
-    sys.exit(0)
+    
+       # startFollowingThread()
+    
+    try:
+        call(string, shell=True)
+    except KeyboardInterrupt:
+        sys.exit(0)
 
 def RPIMODE():
         import kbhit
