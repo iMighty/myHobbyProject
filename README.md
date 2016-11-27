@@ -7,7 +7,7 @@ Current stuff I'm working on
 
 Currently on ice
 ---
-* ML: Working on a way to continuously train digit recognition while drawing additional input with the mouse. 
+* digitRec: Working on a way to continuously train digit recognition while drawing additional input with the mouse. 
 * tetrisAI: Want to start with this but I have to learn Lua 
 
 Done stuff
