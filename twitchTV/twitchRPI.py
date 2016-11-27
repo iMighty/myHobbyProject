@@ -1,3 +1,5 @@
+#v1.1 STREAM TITLE and you're able to go back if you choose the wrong alternative
+
 #If you have the kbHit file in the same folder as this python script you can remove these 5 lines.
 import os, sys, inspect
 
@@ -32,13 +34,35 @@ MAC = True
 listquality  = {'low': '360p30,low', 'medium': '480p30,medium', 'high': '720p30,720p,high',
             'HD': 'best'}
 
+def chooseMode():
+    print "1: To view top streamer currently on twitch.tv"
+    print "2: To following WIP"
+    try:
+        arg = input(": ")
+        return arg
+    except KeyboardInterrupt:
+        print "Bye bye"
+        exit()
+
+def openChat():
+    # Have to make an iFrame that is small and concise because now it opens a new tab in your
+    # current browser
+    import webbrowser
+    
+    webbrowser.open_new(url + "/chat?popout=")
+
 def PCMODE():
     from subprocess import call
-    string = "livestreamer " + url + " " + listquality[usrquality] + " --twitch-oauth-token " + authKey
+    # print url
+    string = 'livestreamer ' + url + ' ' + listquality[usrquality] +  \
+        ' --twitch-oauth-token ' + authKey + """  -p "/Applications/VLC.app/Contents/MacOS/VLC --meta-title=' """ \
+         + str(status) + """ '" """
     
        # startFollowingThread()
-    
+    # openChat()
+    #print "Here"
     try:
+        # Will look into other types of solution. UNSAFE
         call(string, shell=True)
     except KeyboardInterrupt:
         sys.exit(0)
@@ -68,51 +92,60 @@ def RPIMODE():
         ssh.exec_command("killall omxplayer.bin")
 
         kb.set_normal_term()
-        
-cls()
-if len(sys.argv) == 1:
-    print "Please specify which platform you use, PC or RPI"
-    sys.exit()
-        
-RPI_OR_PC = str(sys.argv[1])
 
-if RPI_OR_PC == 'PC':
-    print "PC MODE"
-else:
-    print "RPI MODE"
-        
-if len(sys.argv) > 2:
-    usrquality = str(sys.argv[2])
-    print "Setting quality to " + usrquality
-else:
-    print "No quality specified, defaulting to 'medium'"
-    usrquality = 'medium'
+#------------------#
+if __name__ == "__main__":
+    while True:
+        cls()
+        undo = False
+        if len(sys.argv) == 1:
+            print "Please specify which platform you use, PC or RPI"
+            sys.exit()
+                
+        RPI_OR_PC = str(sys.argv[1])
 
-print "1: To view top streamer currently on twitch.tv"
-print "2: To following WIP"
-try:
-    arg = input(": ")
-except KeyboardInterrupt:
-    print "Bye bye"
-    exit()
+        if RPI_OR_PC == 'PC':
+            print "PC MODE"
+        else:
+            print "RPI MODE"
+                
+        if len(sys.argv) > 2:
+            usrquality = str(sys.argv[2])
+            print "Setting quality to " + usrquality
+        else:
+            print "No quality specified, defaulting to 'medium'"
+            usrquality = 'medium'
 
-if arg == 1:
-	cls()
-	print "Fetching current top streamers..."
-	jsonTest.fetchTopStreamer()
-	arg = input(": ")
-	url, streamer = jsonTest.chooseTopStreamer(arg)
-elif arg == 2:
-	print "Fetching streamer you're following"
-	jsonTest.fetchFollowing()
-	arg = input(": ")
-	url, streamer = jsonTest.chooseFollowingStreamer(arg)
-else: 
-	print "Error"
-	exit()
+        arg = chooseMode()
 
-if RPI_OR_PC == 'PC':
-    PCMODE()
-else:
-    RPIMODE()
+        if arg == 1:   
+            cls()
+            print "Fetching current top streamers..."
+            jsonTest.fetchTopStreamer()
+            print "enter 'b' to go back"
+            arg = raw_input(": ")
+            if arg == 'b':
+                undo = True
+            else:
+                url, streamer, status = jsonTest.chooseTopStreamer(int(arg))
+
+        elif arg == 2:
+            cls()
+            print "Fetching streamer you're following"
+            jsonTest.fetchFollowing()
+            print "enter 'b' to go back"
+            arg = raw_input(": ")
+            if arg == 'b':
+                undo = True
+            else:
+                url, streamer, status = jsonTest.chooseFollowingStreamer(int(arg))
+
+        else: 
+        	print "Error"
+        	exit()
+
+        if RPI_OR_PC == 'PC' and not undo:
+            PCMODE()
+        elif not undo:
+            RPIMODE()
 

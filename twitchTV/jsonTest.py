@@ -1,14 +1,20 @@
 #Using twitch API to fetch current top most viewers on twitch.tv or the streamers you follow
 
-# v1.1, Fixed an error that occurs when a streamer has undefined characters
+# v1.1	Fixed an error that occurs when a streamer has undefined characters
+# v1.2 	Added a progressbar, also there is a notification function. None of these are fully tested yet aka. 
+# 		not implemented not working
 
 import requests, os, json
 from pync import Notifier
+import progressbar
 
-followingList = []
+
 topStreamerList = []
 topUser = []
+topStatus = []
+followingList = []
 followingUser = []
+followingStatus = []
 #Add your unique key
 auth_key = 'q2rcoimmqi7m95tozjqnw9aqk00vkk'
 check = False
@@ -24,6 +30,7 @@ def fetchTopStreamer():
 		#print item['channel']['url']
 			topStreamerList.append(item['channel']['url'])
 			topUser.append(item['channel']['display_name'])
+			topStatus.append(item['channel']['status'])
 		except UnicodeEncodeError:
 			print str(i) + ". Streamer is playing " + item['game'] + ". Viewers: " + str(item['viewers'])
 	'''
@@ -52,7 +59,7 @@ def checkFollowing():
 						open="twitch.tv/" + newStreamer)
 
 def chooseTopStreamer(arg):
-	return topStreamerList[arg], topUser[arg]
+	return topStreamerList[arg], topUser[arg], topStatus[arg]
 '''
 fetchTopStreamer()
 arg = input(": ")
@@ -71,6 +78,7 @@ def fetchFollowing():
 				i += 1
 			followingList.append(item['channel']['url'])
 			followingUser.append(item['channel']['display_name'])
+			followingStatus.append(item['channel']['status'])
 		except UnicodeEncodeError:
 			if not check:
 				print str(i) + ". Streamer is playing " + item['game'] + ". Viewers: " + str(item['viewers'])
@@ -78,4 +86,4 @@ def fetchFollowing():
 				pass
 
 def chooseFollowingStreamer(arg):
-	return followingList[arg], followingUser[arg]
+	return followingList[arg], followingUser[arg], followingStatus[arg]
